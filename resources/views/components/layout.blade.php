@@ -22,8 +22,9 @@
     <meta name="twitter:description" content="" />
     {{-- TODO Twitter専用の記述です。シェアされた時に表示したい画像を絶対パスで設定 --}}
     <meta name="twitter:image:src" content="URL" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>本の感想共有アプリ</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <title>ユアスクLaravel掲示板</title>
 </head>
 
 <body>
