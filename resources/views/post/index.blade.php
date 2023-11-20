@@ -46,6 +46,18 @@ $user_id = Auth::id();
                 </form>
             </div>
             @endif
+            @auth
+            <a href="{{ route('post.comment', ['post_id' => $post->id]) }}" class="btn btn-outline-secondary">返信</a>
+            @endauth
+            <details>
+                <summary>{{ $post->comments->count() }}件のコメント</summary>
+                @foreach ($post->comments as $comment)
+                <div class="d-flex justify-content-between align-items-start {{ $loop->last ? 'none' : 'border-bottom' }}">
+                    <p>{{ $comment->comment }}</p>
+                    <p>by&nbsp{{ $comment->user->name }}</p>
+                </div>
+                @endforeach
+            </details>
         </div>
         @endforeach
     </x-container>

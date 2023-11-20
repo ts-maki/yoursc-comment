@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,10 @@ Route::get('/post/edit/{post_id}', [PostController::class, 'edit'])->name('post.
 Route::put('/post/edit/{post_id}', [PostController::class, 'update'])->name('post.update');
 //投稿削除
 Route::delete('/post/delete/{post_id}', [PostController::class, 'destroy'])->name('post.delete');
+//返信作成
+Route::get('/post/comment/{post_id}', [CommentController::class, 'create'])->name('post.comment');
+//返信投稿
+Route::post('/post/comment/{post_id}', [CommentController::class, 'store'])->name('comment.store');
 
 Route::get('/bootstrap', function () {
     return view('bootstrap');
