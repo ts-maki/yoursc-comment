@@ -22,6 +22,6 @@ class CommentController extends Controller
             'comment' => $request->comment
         ]);
 
-        return to_route('post.index')->with('message', '返信を保存しました');
+        return to_route('post.index')->with('comment_message', '返信を保存しました');
     }
 }
