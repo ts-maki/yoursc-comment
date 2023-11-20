@@ -13,6 +13,7 @@ class CommentController extends Controller
         return view('comment.create')->with('post_id', $post_id);
     }
 
+    //コメント新規作成
     public function store(Request $request, $post_id)
     {
         $user_id = Auth::id();
@@ -24,4 +25,30 @@ class CommentController extends Controller
 
         return to_route('post.index')->with('comment_message', '返信を保存しました');
     }
+
+    //コメント編集ページ遷移
+    public function edit($comment_id)
+    {
+
+        $comment = Comment::findOrFail($comment_id);
+        return view('comment.edit')->with('comment', $comment);
+    }
+
+    //コメント更新
+    public function update(Request $request, $comment_id)
+    {
+        $comment = Comment::findOrFail($comment_id);
+        $comment->fill($request->all())->save();
+        return to_route('post.index')->with('comment_message', 'コメント更新が完了しました');
+    }
+
+    //コメント削除
+    public function destroy($comment_id)
+    {
+
+        $comment = Comment::findOrFail($comment_id);
+        $comment->delete();
+        return to_route('post.index')->with('comment_message', '投稿を削除しました');
+    }
+    
 }

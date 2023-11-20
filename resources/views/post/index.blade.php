@@ -28,6 +28,9 @@ $user_id = Auth::id();
         @if (session('message'))
         <p>{{ session('message') }}</p>
         @endif
+        @if (session('comment_message'))
+        <p>{{ session('comment_message') }}</p>
+        @endif
         @foreach ($posts as $post)
         <div class="my-2 border p-2">
             <div>
@@ -49,15 +52,24 @@ $user_id = Auth::id();
             @auth
             <a href="{{ route('post.comment', ['post_id' => $post->id]) }}" class="btn btn-outline-secondary">コメント</a>
             @endauth
-            @if (session('comment_message'))
-            <p>{{ session('comment_message') }}</p>
-            @endif
             <details>
                 <summary>{{ $post->comments->count() }}件のコメント</summary>
                 @foreach ($post->comments as $comment)
-                <div class="d-flex justify-content-between align-items-start {{ $loop->last ? 'none' : 'border-bottom' }}">
+                <div
+                    class="d-flex justify-content-between align-items-start {{ $loop->last ? 'none' : 'border-bottom' }}">
                     <p>{{ $comment->comment }}</p>
-                    <p>by&nbsp{{ $comment->user->name }}</p>
+                    <div>
+                        <p>by&nbsp{{ $comment->user->name }}</p>
+                        @if ($user_id == $comment->user->id)
+                        <a href="{{ route('comment.edit', ['comment_id' => $comment->id]) }}"
+                            class="btn btn-outline-primary">編集</a>
+                        <form method="post" action="{{ route('comment.delete', ['comment_id' => $comment->id]) }}">
+                            @csrf
+                            @method('delete')
+                            <input type="submit" value="削除" class="btn btn-outline-danger">
+                        </form>
+                        @endif
+                    </div>
                 </div>
                 @endforeach
             </details>

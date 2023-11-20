@@ -25,7 +25,7 @@ Route::get('index', [PostController::class, 'index'])->name('post.index');
 //新規投稿
 Route::get('/post/create/{user_id}', [PostController::class, 'create'])->name('post.create');
 Route::post('/post/{user_id}', [PostController::class, 'store'])->name('post.store');
-//投稿詳細
+//投稿詳細e
 Route::get('/post/{post_id}', [PostController::class, 'show'])->name('post.show');
 //投稿編集
 Route::get('/post/edit/{post_id}', [PostController::class, 'edit'])->name('post.edit');
@@ -36,6 +36,11 @@ Route::delete('/post/delete/{post_id}', [PostController::class, 'destroy'])->nam
 Route::get('/post/comment/{post_id}', [CommentController::class, 'create'])->name('post.comment');
 //返信投稿
 Route::post('/post/comment/{post_id}', [CommentController::class, 'store'])->name('comment.store');
+//返信編集
+Route::get('/comment/edit/{comment_id}', [CommentController::class, 'edit'])->name('comment.edit');
+Route::put('/comment/edit/{comment_id}', [CommentController::class, 'update'])->name('comment.update');
+//返信削除
+Route::delete('/comment/edit/{comment_id}', [CommentController::class, 'destroy'])->name('comment.delete');
 
 Route::get('/bootstrap', function () {
     return view('bootstrap');
