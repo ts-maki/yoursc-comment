@@ -47,8 +47,11 @@ $user_id = Auth::id();
             </div>
             @endif
             @auth
-            <a href="{{ route('post.comment', ['post_id' => $post->id]) }}" class="btn btn-outline-secondary">返信</a>
+            <a href="{{ route('post.comment', ['post_id' => $post->id]) }}" class="btn btn-outline-secondary">コメント</a>
             @endauth
+            @if (session('comment_message'))
+            <p>{{ session('comment_message') }}</p>
+            @endif
             <details>
                 <summary>{{ $post->comments->count() }}件のコメント</summary>
                 @foreach ($post->comments as $comment)
