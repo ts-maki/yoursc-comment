@@ -1,3 +1,52 @@
+@php
+$user_id = Auth::id();
+@endphp
+@if (Route::has('login'))
+<div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
+    @auth
+    <a href="{{ url('/dashboard') }}"
+        class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">設定</a>
+    @else
+    <a href="{{ route('login') }}"
+        class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">ログイン</a>
+
+    @if (Route::has('register'))
+    <a href="{{ route('register') }}"
+        class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">設定</a>
+    @endif
+    @endauth
+</div>
+@endif
 <x-layout>
-    <h3 class="text-bg-warning">掲示板</h3>
+    <x-container>
+        <h3 class="text-bg-warning">掲示板</h3>
+        @auth
+        <div>
+            <a href="{{ route('post.create', $user_id) }}">投稿フォームへ</a>
+        </div>
+        @endauth
+        @if (session('message'))
+        <p>{{ session('message') }}</p>
+        @endif
+        @foreach ($posts as $post)
+        <div class="my-2 border p-2">
+            <div>
+
+            </div>
+            <h3><a href="{{ route('post.show', ['post_id' => $post->id]) }}">{{ $post->title }}</a></h3>
+            <p>{{ $post->comment }}</p>
+            <p>by{{ $post->user->name }}</p>
+            @if ($user_id === $post->user_id)
+            <div class="d-flex justify-content-between align-items-start">
+                <a href="{{ route('post.edit', ['post_id' => $post->id]) }}" class="btn btn-outline-primary">編集</a>
+                <form method="post" action="{{ route('post.delete', ['post_id' => $post->id]) }}">
+                    @csrf
+                    @method('delete')
+                    <input type="submit" value="削除" class="btn btn-outline-danger">
+                </form>
+            </div>
+            @endif
+        </div>
+        @endforeach
+    </x-container>
 </x-layout>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,8 +15,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('', function () {
     return view('welcome');
+});
+
+//投稿一覧
+Route::get('index', [PostController::class, 'index'])->name('post.index');
+//新規投稿
+Route::get('/post/create/{user_id}', [PostController::class, 'create'])->name('post.create');
+Route::post('/post/{user_id}', [PostController::class, 'store'])->name('post.store');
+//投稿詳細
+Route::get('/post/{post_id}', [PostController::class, 'show'])->name('post.show');
+//投稿編集
+Route::get('/post/edit/{post_id}', [PostController::class, 'edit'])->name('post.edit');
+Route::put('/post/edit/{post_id}', [PostController::class, 'update'])->name('post.update');
+//投稿削除
+Route::delete('/post/delete/{post_id}', [PostController::class, 'destroy'])->name('post.delete');
+
+Route::get('/bootstrap', function () {
+    return view('bootstrap');
 });
 
 Route::get('/dashboard', function () {
@@ -28,4 +46,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
