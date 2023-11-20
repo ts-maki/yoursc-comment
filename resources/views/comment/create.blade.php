@@ -2,6 +2,7 @@
 $user_id = Auth::id();
 @endphp
 <x-layout>
+<x-container>
     <h3 class="">返信フォーム</h3>
     @if (session('message'))
     <p>{{ session('message') }}</p>
@@ -17,3 +18,4 @@ $user_id = Auth::id();
         </form>
     </div>
 </x-layout>
+</x-container>
