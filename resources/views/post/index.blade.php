@@ -19,6 +19,7 @@ $user_id = Auth::id();
 @endif
 <x-layout>
     <x-container>
+        <h2>{{ Auth::user()->name }}さんでログイン</h2>
         <h3 class="text-bg-warning">掲示板</h3>
         @auth
         <div>
@@ -50,7 +51,17 @@ $user_id = Auth::id();
             </div>
             @endif
             @auth
-            <a href="{{ route('post.comment', ['post_id' => $post->id]) }}" class="btn btn-outline-secondary">コメント</a>
+            <div class="d-flex justify-content-between align-items-start">
+                @if ($user_id !== $post->user_id)
+                <a href="{{ route('post.comment', ['post_id' => $post->id]) }}"
+                    class="btn btn-outline-secondary">コメント</a>
+                @endif
+                @if (!Auth::user()->isfavorite($post->id))
+                <a href=""><img src="{{ asset('images/favorite_off.svg') }}" alt="いいね登録ボタン"></a>
+                @else
+                <a href=""><img src="{{ asset('images/favorite_on.svg') }}" alt="いいね解除ボタン"></a>
+                @endif
+            </div>
             @endauth
             <details>
                 <summary>{{ $post->comments->count() }}件のコメント</summary>
