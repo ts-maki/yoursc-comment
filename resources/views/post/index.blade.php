@@ -32,6 +32,9 @@ $user_id = Auth::id();
         @if (session('comment_message'))
         <p>{{ session('comment_message') }}</p>
         @endif
+        @if (session('like_message'))
+        <p>{{ session('like_message') }}</p>
+        @endif
         @foreach ($posts as $post)
         <div class="my-2 border p-2">
             <div>
@@ -57,7 +60,7 @@ $user_id = Auth::id();
                     class="btn btn-outline-secondary">コメント</a>
                 @endif
                 @if (!Auth::user()->isfavorite($post->id))
-                <a href=""><img src="{{ asset('images/favorite_off.svg') }}" alt="いいね登録ボタン"></a>
+                <a href="{{ route('like.store', ['post_id' => $post->id]) }}"><img src="{{ asset('images/favorite_off.svg') }}" alt="いいね登録ボタン"></a>
                 @else
                 <a href=""><img src="{{ asset('images/favorite_on.svg') }}" alt="いいね解除ボタン"></a>
                 @endif
