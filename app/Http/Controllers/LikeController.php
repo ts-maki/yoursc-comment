@@ -10,6 +10,7 @@ class LikeController extends Controller
     public function store($post_id)
     {
         Auth::user()->likes()->syncWithoutDetaching($post_id);
+        
         return to_route('post.index')->with('like_on_message', 'いいね登録しました');
     }
 

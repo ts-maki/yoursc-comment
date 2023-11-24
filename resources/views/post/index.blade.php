@@ -40,9 +40,6 @@ $user_id = Auth::id();
         @endif
         @foreach ($posts as $post)
         <div class="my-2 border p-2">
-            <div>
-
-            </div>
             <h3><a href="{{ route('post.show', ['post_id' => $post->id]) }}">{{ $post->title }}</a></h3>
             <p>{{ $post->comment }}</p>
             <p>by{{ $post->user->name }}</p>
