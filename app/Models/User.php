@@ -47,4 +47,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
+    public function likes()
+    {
+        return $this->belongsToMany(Post::class, 'likes')->withTimestamps();
+    }
+
+    //対象の投稿をユーザーがいいね登録しているか(true,false)
+    public function isFavorite($post_id)
+    {
+        return $this->likes()->where('post_id', $post_id)->exists();
+    }
 }

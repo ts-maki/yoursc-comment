@@ -19,6 +19,7 @@ $user_id = Auth::id();
 @endif
 <x-layout>
     <x-container>
+        <h2>{{ Auth::user()->name }}さんでログイン</h2>
         <h3 class="text-bg-warning">掲示板</h3>
         @auth
         <div>
@@ -31,11 +32,14 @@ $user_id = Auth::id();
         @if (session('comment_message'))
         <p>{{ session('comment_message') }}</p>
         @endif
+        @if (session('like_on_message'))
+        <p>{{ session('like_on_message') }}</p>
+        @endif
+        @if (session('like_off_message'))
+        <p>{{ session('like_off_message') }}</p>
+        @endif
         @foreach ($posts as $post)
         <div class="my-2 border p-2">
-            <div>
-
-            </div>
             <h3><a href="{{ route('post.show', ['post_id' => $post->id]) }}">{{ $post->title }}</a></h3>
             <p>{{ $post->comment }}</p>
             <p>by{{ $post->user->name }}</p>
@@ -50,7 +54,17 @@ $user_id = Auth::id();
             </div>
             @endif
             @auth
-            <a href="{{ route('post.comment', ['post_id' => $post->id]) }}" class="btn btn-outline-secondary">コメント</a>
+            <div class="d-flex justify-content-between align-items-start">
+                @if ($user_id !== $post->user_id)
+                <a href="{{ route('post.comment', ['post_id' => $post->id]) }}"
+                    class="btn btn-outline-secondary">コメント</a>
+                @endif
+                @if (!Auth::user()->isfavorite($post->id))
+                <button onclick="entryLike({{ $post->id }})" style="border: none; background-color: #F8FAFC"><img src="{{ asset('images/favorite_off.svg') }}" alt="いいね登録ボタン"></button>
+                @else
+                <button onclick="deleteLike({{ $post->id }})" style="border: none; background-color: #F8FAFC"><img src="{{ asset('images/favorite_on.svg') }}" alt="いいね解除ボタン"></button>
+                @endif
+            </div>
             @endauth
             <details>
                 <summary>{{ $post->comments->count() }}件のコメント</summary>
@@ -77,3 +91,38 @@ $user_id = Auth::id();
         @endforeach
     </x-container>
 </x-layout>
+<script>
+    //いいね登録
+    const entryLike = (postId) => {
+        fetch(`/post/like/${postId}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+        })
+        .then(response => {
+            console.log(`${postId}のpostIDでいいね登録成功`);
+            location.reload();
+        })
+        .catch(error => {
+            console.log('いいねの登録でエラーが発生しました', error);
+        });
+    }
+
+    //いいね削除
+    const deleteLike = (postId) => {
+        fetch(`/post/like/${postId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+        })
+        .then(response => {
+            console.log(`${postId}のpostIDでいいね解除成功`);
+            location.reload();
+        })
+        .catch(error => {
+            console.log('いいねの解除でエラーが発生しました', error);
+        });
+    }
+</script>
