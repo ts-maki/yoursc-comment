@@ -44,6 +44,8 @@ Route::put('/comment/edit/{comment_id}', [CommentController::class, 'update'])->
 Route::delete('/comment/edit/{comment_id}', [CommentController::class, 'destroy'])->name('comment.delete');
 //いいね登録
 Route::post('/post/like/{post_id}', [LikeController::class, 'store'])->name('like.store');
+//いいね削除
+Route::delete('/post/like/{post_id}', [LikeController::class, 'destory'])->name('like.delete');
 
 Route::get('/bootstrap', function () {
     return view('bootstrap');

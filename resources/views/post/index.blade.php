@@ -35,6 +35,9 @@ $user_id = Auth::id();
         @if (session('like_message'))
         <p>{{ session('like_message') }}</p>
         @endif
+        @if (session('like_message_delete'))
+        <p>{{ session('like_message_delete') }}</p>
+        @endif
         @foreach ($posts as $post)
         <div class="my-2 border p-2">
             <div>
@@ -62,7 +65,7 @@ $user_id = Auth::id();
                 @if (!Auth::user()->isfavorite($post->id))
                 <button onclick="entryLike({{ $post->id }})" style="border: none; background-color: #F8FAFC"><img src="{{ asset('images/favorite_off.svg') }}" alt="いいね登録ボタン"></button>
                 @else
-                <a href=""><img src="{{ asset('images/favorite_on.svg') }}" alt="いいね解除ボタン"></a>
+                <button onclick="deleteLike({{ $post->id }})" style="border: none; background-color: #F8FAFC"><img src="{{ asset('images/favorite_on.svg') }}" alt="いいね解除ボタン"></button>
                 @endif
             </div>
             @endauth
@@ -92,6 +95,7 @@ $user_id = Auth::id();
     </x-container>
 </x-layout>
 <script>
+    //いいね登録
     const entryLike = (postId) => {
         fetch(`/post/like/${postId}`, {
             method: 'POST',
@@ -105,6 +109,23 @@ $user_id = Auth::id();
         })
         .catch(error => {
             console.log('いいねの登録でエラーが発生しました', error);
+        });
+    }
+
+    //いいね削除
+    const deleteLike = (postId) => {
+        fetch(`/post/like/${postId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+        })
+        .then(response => {
+            console.log(`${postId}のpostIDでいいね解除成功`);
+            location.reload();
+        })
+        .catch(error => {
+            console.log('いいねの解除でエラーが発生しました', error);
         });
     }
 </script>
