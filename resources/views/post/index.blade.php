@@ -60,7 +60,7 @@ $user_id = Auth::id();
                     class="btn btn-outline-secondary">コメント</a>
                 @endif
                 @if (!Auth::user()->isfavorite($post->id))
-                <a href="{{ route('like.store', ['post_id' => $post->id]) }}"><img src="{{ asset('images/favorite_off.svg') }}" alt="いいね登録ボタン"></a>
+                <button onclick="entryLike({{ $post->id }})" style="border: none; background-color: #F8FAFC"><img src="{{ asset('images/favorite_off.svg') }}" alt="いいね登録ボタン"></button>
                 @else
                 <a href=""><img src="{{ asset('images/favorite_on.svg') }}" alt="いいね解除ボタン"></a>
                 @endif
@@ -91,3 +91,20 @@ $user_id = Auth::id();
         @endforeach
     </x-container>
 </x-layout>
+<script>
+    const entryLike = (postId) => {
+        fetch(`/post/like/${postId}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+        })
+        .then(response => {
+            console.log(`${postId}のpostIDでいいね登録成功`);
+            location.reload();
+        })
+        .catch(error => {
+            console.log('いいねの登録でエラーが発生しました', error);
+        });
+    }
+</script>

@@ -43,7 +43,7 @@ Route::put('/comment/edit/{comment_id}', [CommentController::class, 'update'])->
 //返信削除
 Route::delete('/comment/edit/{comment_id}', [CommentController::class, 'destroy'])->name('comment.delete');
 //いいね登録
-Route::get('/post/like/{post_id}', [LikeController::class, 'store'])->name('like.store');
+Route::post('/post/like/{post_id}', [LikeController::class, 'store'])->name('like.store');
 
 Route::get('/bootstrap', function () {
     return view('bootstrap');
