@@ -66,6 +66,7 @@ class PostController extends Controller
     {
 
         $post = Post::findOrFail($post_id);
+        $post->likes()->detach();
         $post->delete();
         return to_route('post.index')->with('message', '投稿を削除しました');
     }

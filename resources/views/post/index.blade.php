@@ -32,11 +32,11 @@ $user_id = Auth::id();
         @if (session('comment_message'))
         <p>{{ session('comment_message') }}</p>
         @endif
-        @if (session('like_message'))
-        <p>{{ session('like_message') }}</p>
+        @if (session('like_on_message'))
+        <p>{{ session('like_on_message') }}</p>
         @endif
-        @if (session('like_message_delete'))
-        <p>{{ session('like_message_delete') }}</p>
+        @if (session('like_off_message'))
+        <p>{{ session('like_off_message') }}</p>
         @endif
         @foreach ($posts as $post)
         <div class="my-2 border p-2">
