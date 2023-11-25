@@ -6,7 +6,7 @@ $user_id = Auth::id();
         @auth
         <h2>{{ Auth::user()->name }}さんでログイン</h2>
         @endauth
-        <h3 class="bg-success p-1 text-white bg-opacity-75 fs-4">投稿一覧</h3>
+        <h3 class="bg-success p-1 text-white bg-opacity-75 fs-5">投稿一覧</h3>
         @auth
         <div>
             <a href="{{ route('post.create', $user_id) }}" class="text-decoration-underline">投稿フォームへ</a>
