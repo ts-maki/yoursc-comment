@@ -26,7 +26,7 @@ Route::get('index', [PostController::class, 'index'])->name('post.index');
 //新規投稿
 Route::get('/post/create/{user_id}', [PostController::class, 'create'])->name('post.create');
 Route::post('/post/{user_id}', [PostController::class, 'store'])->name('post.store');
-//投稿詳細e
+//投稿詳細
 Route::get('/post/{post_id}', [PostController::class, 'show'])->name('post.show');
 //投稿編集
 Route::get('/post/edit/{post_id}', [PostController::class, 'edit'])->name('post.edit');
