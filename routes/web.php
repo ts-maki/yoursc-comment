@@ -22,7 +22,7 @@ Route::get('', function () {
 });
 
 //投稿一覧
-Route::get('index', [PostController::class, 'index'])->name('post.index');
+Route::get('', [PostController::class, 'index'])->name('post.index');
 //新規投稿
 Route::get('/post/create/{user_id}', [PostController::class, 'create'])->name('post.create');
 Route::post('/post/{user_id}', [PostController::class, 'store'])->name('post.store');
