@@ -1,29 +1,15 @@
 @php
 $user_id = Auth::id();
 @endphp
-@if (Route::has('login'))
-<div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
-    @auth
-    <a href="{{ url('/dashboard') }}"
-        class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">設定</a>
-    @else
-    <a href="{{ route('login') }}"
-        class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">ログイン</a>
-
-    @if (Route::has('register'))
-    <a href="{{ route('register') }}"
-        class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">設定</a>
-    @endif
-    @endauth
-</div>
-@endif
 <x-layout>
     <x-container>
+        @auth
         <h2>{{ Auth::user()->name }}さんでログイン</h2>
-        <h3 class="text-bg-warning">掲示板</h3>
+        @endauth
+        <h3 class="bg-success p-1 text-white bg-opacity-75 fs-5">投稿一覧</h3>
         @auth
         <div>
-            <a href="{{ route('post.create', $user_id) }}">投稿フォームへ</a>
+            <a href="{{ route('post.create', $user_id) }}" class="btn btn-outline-info mt-2">投稿フォームへ</a>
         </div>
         @endauth
         @if (session('message'))
@@ -39,12 +25,16 @@ $user_id = Auth::id();
         <p>{{ session('like_off_message') }}</p>
         @endif
         @foreach ($posts as $post)
-        <div class="my-2 border p-2">
-            <h3><a href="{{ route('post.show', ['post_id' => $post->id]) }}">{{ $post->title }}</a></h3>
-            <p>{{ $post->comment }}</p>
-            <p>by{{ $post->user->name }}</p>
-            @if ($user_id === $post->user_id)
+        <div class="my-2 border p-2 rounded">
             <div class="d-flex justify-content-between align-items-start">
+                <h3 class="fs-5"><a href="{{ route('post.show', ['post_id' => $post->id]) }}"
+                        class="text-decoration-underline">{{ $post->title }}</a></h3>
+                <p>by{{ $post->user->name }}</p>
+            </div>
+            <p>{{ $post->comment }}</p>
+
+            @if ($user_id === $post->user_id)
+            <div class="d-flex justify-content-between align-items-start mt-4">
                 <a href="{{ route('post.edit', ['post_id' => $post->id]) }}" class="btn btn-outline-primary">編集</a>
                 <form method="post" action="{{ route('post.delete', ['post_id' => $post->id]) }}">
                     @csrf
@@ -54,26 +44,30 @@ $user_id = Auth::id();
             </div>
             @endif
             @auth
-            <div class="d-flex justify-content-between align-items-start">
-                @if ($user_id !== $post->user_id)
+            @if ($user_id !== $post->user_id)
+            <div class="mt-2">
                 <a href="{{ route('post.comment', ['post_id' => $post->id]) }}"
                     class="btn btn-outline-secondary">コメント</a>
-                @endif
-                @if (!Auth::user()->isfavorite($post->id))
-                <button onclick="entryLike({{ $post->id }})" style="border: none; background-color: #F8FAFC"><img src="{{ asset('images/favorite_off.svg') }}" alt="いいね登録ボタン"></button>
-                @else
-                <button onclick="deleteLike({{ $post->id }})" style="border: none; background-color: #F8FAFC"><img src="{{ asset('images/favorite_on.svg') }}" alt="いいね解除ボタン"></button>
-                @endif
             </div>
+            @endif
+            @if (!Auth::user()->isfavorite($post->id))
+            <button onclick="entryLike({{ $post->id }})" style="border: none; background-color: #F8FAFC"
+                class="mt-2"><img src="{{ asset('images/favorite_off.svg') }}" alt="いいね登録ボタン"></button>
+            @else
+            <button onclick="deleteLike({{ $post->id }})" style="border: none; background-color: #F8FAFC"
+                class="mt-2"><img src="{{ asset('images/favorite_on.svg') }}" alt="いいね解除ボタン"></button>
+            @endif
             @endauth
             <details>
                 <summary>{{ $post->comments->count() }}件のコメント</summary>
                 @foreach ($post->comments as $comment)
                 <div
-                    class="d-flex justify-content-between align-items-start {{ $loop->last ? 'none' : 'border-bottom' }}">
-                    <p>{{ $comment->comment }}</p>
-                    <div>
+                    class="{{ $loop->last ? 'none' : 'border-bottom' }} pt-2">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <p>{{ $comment->comment }}</p>
                         <p>by&nbsp{{ $comment->user->name }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-start pb-2">
                         @if ($user_id == $comment->user->id)
                         <a href="{{ route('comment.edit', ['comment_id' => $comment->id]) }}"
                             class="btn btn-outline-primary">編集</a>
