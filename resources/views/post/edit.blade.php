@@ -15,8 +15,8 @@ $user_id = Auth::id();
                     <label for="title">タイトル</label>
                     <div><input type="text" name="title" id="title" value="{{ old('title', $post->title) }}"></div>
                 </div>
-                <div>
-                    <label for="comment"></label>
+                <div class="mt-2">
+                    <label for="comment">内容</label>
                     <div><textarea name="comment" cols="90" rows="10"
                             id="comment">{{ old('comment', $post->comment) }}</textarea></div>
                 </div>

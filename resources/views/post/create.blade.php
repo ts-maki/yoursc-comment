@@ -14,7 +14,7 @@ $user_id = Auth::id();
                     <label for="title">タイトル</label>
                     <div><input type="text" name="title" id="title"></div>
                 </div>
-                <div>
+                <div class="mt-2">
                     <label for="comment">内容</label>
                     <div><textarea name="comment" cols="90" rows="10" id="comment"></textarea></div>
                 </div>
