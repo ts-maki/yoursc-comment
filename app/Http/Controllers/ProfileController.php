@@ -51,14 +51,18 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
-        // $posts->likes()->detach();
+
         $user->likes()->detach();
         
-        //外部キー制約を一時的に無効化
         Schema::disableForeignKeyConstraints();
-        $posts = Post::where('user_id', $user->id)->delete();
+        $posts = Post::where('user_id', $user->id)->get();
+        foreach($posts as $post) {
+            $post->likes()->detach();
+            $post->delete();
+        }
+
         $comments = Comment::where('user_id', $user->id)->delete();
-        //外部キー制約を一時的に有効化
+        
         Schema::enableForeignKeyConstraints();
     
         Auth::logout();
