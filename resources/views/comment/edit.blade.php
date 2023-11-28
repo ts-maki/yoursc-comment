@@ -13,7 +13,7 @@ $user_id = Auth::id();
                     <div><textarea name="comment" cols="90" rows="10"
                             id="comment">{{ old('comment', $comment->comment) }}</textarea></div>
                 </div>
-                <input type="submit" value="登録">
+                <input type="submit" value="登録" class="btn btn-outline-primary">
             </form>
         </div>
     </x-container>
