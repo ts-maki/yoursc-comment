@@ -56,8 +56,10 @@ class ProfileController extends Controller
         
         Schema::disableForeignKeyConstraints();
         $posts = Post::where('user_id', $user->id)->get();
+        //各投稿に紐づくこのデータを削除する
         foreach($posts as $post) {
             $post->likes()->detach();
+            $post->comments()->delete();
             $post->delete();
         }
 
