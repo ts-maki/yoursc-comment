@@ -61,8 +61,7 @@ $user_id = Auth::id();
             <details>
                 <summary>{{ $post->comments->count() }}件のコメント</summary>
                 @foreach ($post->comments as $comment)
-                <div
-                    class="{{ $loop->last ? 'none' : 'border-bottom' }} pt-2">
+                <div class="{{ $loop->last ? 'none' : 'border-bottom' }} pt-2">
                     <div class="d-flex justify-content-between align-items-start">
                         <p>{{ $comment->comment }}</p>
                         <p>by&nbsp{{ $comment->user->name }}</p>
@@ -83,6 +82,9 @@ $user_id = Auth::id();
             </details>
         </div>
         @endforeach
+        <div class="d-flex justify-content-center">
+            {{ $posts->links() }}
+        </div>
     </x-container>
 </x-layout>
 <script>
