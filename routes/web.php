@@ -17,10 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('', function () {
-    return view('welcome');
-});
-
 //投稿一覧
 Route::get('', [PostController::class, 'index'])->name('post.index');
 //新規投稿
