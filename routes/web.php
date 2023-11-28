@@ -47,10 +47,6 @@ Route::post('/post/like/{post_id}', [LikeController::class, 'store'])->name('lik
 //いいね削除
 Route::delete('/post/like/{post_id}', [LikeController::class, 'destory'])->name('like.delete');
 
-Route::get('/bootstrap', function () {
-    return view('bootstrap');
-});
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
