@@ -5,8 +5,8 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                    <a href="{{ route('post.index') }}">
+                        <img src="{{ asset('images/friends.png') }}" alt="みんなの掲示板のロゴ" class="w-20">
                     </a>
                 </div>
 
