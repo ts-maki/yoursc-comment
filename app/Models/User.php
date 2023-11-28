@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Post::class, 'likes')->withTimestamps();
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     //対象の投稿をユーザーがいいね登録しているか(true,false)
     public function isFavorite($post_id)
     {
