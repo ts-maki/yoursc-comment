@@ -24,7 +24,7 @@
     <meta name="twitter:image:src" content="URL" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/app.css',])
-    <title>ユアスクLaravel掲示板</title>
+    <title>みんなの掲示板</title>
 </head>
 
 <body>
