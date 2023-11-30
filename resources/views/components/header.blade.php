@@ -2,7 +2,7 @@
     <div class="container d-flex justify-content-between align-items-center">
         <a href="{{ route('post.index') }}" class="d-flex justify-content-between align-items-center">
             <img src="{{ asset('images/friends.png') }}" alt="みんなの掲示板のロゴ" width="70">
-            <h1 class="fs-4 fw-bold">みんなの掲示板</h1>
+            <h1 class="fs-4 fw-bold">みんなの<span class="header__title"></span>掲示板</h1>
         </a>
         <nav class="navbar">
             <ul class="d-flex">
