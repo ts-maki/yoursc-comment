@@ -22,7 +22,6 @@
     <meta name="twitter:description" content="みんなが投稿できる掲示板" />
     {{-- TODO Twitter専用の記述です。シェアされた時に表示したい画像を絶対パスで設定 --}}
     <meta name="twitter:image:src" content="{{ asset('images/friends.png') }}" />
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/app.css',])
     <title>{{ config('app.name', 'みんなの掲示板') }}</title>
 </head>
