@@ -28,7 +28,7 @@ class PostController extends Controller
     }
 
 
-    //投稿保存
+    //投稿新規作成
     public function store(Request $request, $user_id)
     {
         $post = Post::create([
@@ -37,10 +37,6 @@ class PostController extends Controller
             'comment' => $request->comment
         ]);
 
-        // $posts = Post::with('user')->get();
-        // return view('post.index')
-        //     ->with('message', '投稿を保存しました')
-        //     ->with('posts', $posts);
         return to_route('post.index')->with('message', '投稿を保存しました');
     }
 
@@ -58,7 +54,9 @@ class PostController extends Controller
 
         $post = Post::findOrFail($post_id);
         $post->fill($request->all())->save();
-        return to_route('post.index')->with('message', '更新が完了しました');
+        return to_route('post.index')
+            ->with('message_edit', '投稿の更新が完了しました')
+            ->with('post_id', $post_id);
     }
 
     //投稿削除

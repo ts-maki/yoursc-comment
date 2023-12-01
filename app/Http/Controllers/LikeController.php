@@ -11,13 +11,17 @@ class LikeController extends Controller
     {
         Auth::user()->likes()->syncWithoutDetaching($post_id);
         
-        return to_route('post.index')->with('like_on_message', 'いいね登録しました');
+        return to_route('post.index')
+            ->with('like_on_message', 'いいね登録しました')
+            ->with('post_id', $post_id);
     }
 
     public function destory($post_id)
     {
         Auth::user()->likes()->detach($post_id);
 
-        return to_route('post.index')->with('like_off_message', 'いいね解除しました');
+        return to_route('post.index')
+            ->with('like_off_message', 'いいね解除しました')
+            ->with('post_id', $post_id);
     }
 }

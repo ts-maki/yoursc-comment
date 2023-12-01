@@ -15,15 +15,6 @@ $user_id = Auth::id();
         @if (session('message'))
         <p>{{ session('message') }}</p>
         @endif
-        @if (session('comment_message'))
-        <p>{{ session('comment_message') }}</p>
-        @endif
-        @if (session('like_on_message'))
-        <p>{{ session('like_on_message') }}</p>
-        @endif
-        @if (session('like_off_message'))
-        <p>{{ session('like_off_message') }}</p>
-        @endif
         @foreach ($posts as $post)
         <div class="my-2 border p-2 rounded">
             <div class="d-flex justify-content-between align-items-start">
@@ -32,9 +23,11 @@ $user_id = Auth::id();
                 <p>by{{ $post->user->name }}</p>
             </div>
             <p>{{ $post->comment }}</p>
-
+            @if (session('message_edit') && (session('post_id') == $post->id))
+                <p class="mt-2">{{ session('message_edit') }}</p>
+            @endif
             @if ($user_id === $post->user_id)
-            <div class="d-flex justify-content-between align-items-start mt-4">
+            <div class="d-flex justify-content-between align-items-start mt-2">
                 <a href="{{ route('post.edit', ['post_id' => $post->id]) }}" class="btn btn-outline-primary">編集</a>
                 <form method="post" action="{{ route('post.delete', ['post_id' => $post->id]) }}">
                     @csrf
@@ -44,11 +37,11 @@ $user_id = Auth::id();
             </div>
             @endif
             @auth
-            @if ($user_id !== $post->user_id)
-            <div class="mt-2">
-                <a href="{{ route('post.comment', ['post_id' => $post->id]) }}"
-                    class="btn btn-outline-secondary">コメント</a>
-            </div>
+            @if (session('like_on_message') && (session('post_id') == $post->id))
+                <p class="mt-2">{{ session('like_on_message') }}</p>
+            @endif
+            @if (session('like_off_message') && (session('post_id') == $post->id))
+                <p class="mt-2">{{ session('like_off_message') }}</p>
             @endif
             @if (!Auth::user()->isfavorite($post->id))
             <button onclick="entryLike({{ $post->id }})" style="border: none; background-color: #F8FAFC"
@@ -57,7 +50,22 @@ $user_id = Auth::id();
             <button onclick="deleteLike({{ $post->id }})" style="border: none; background-color: #F8FAFC"
                 class="mt-2"><img src="{{ asset('images/favorite_on.svg') }}" alt="いいね解除ボタン"></button>
             @endif
+            @if ($user_id !== $post->user_id)
+            <div class="mt-2">
+                <a href="{{ route('post.comment', ['post_id' => $post->id]) }}"
+                    class="btn btn-outline-secondary">コメント</a>
+            </div>
+            @endif
             @endauth
+            @if (session('comment_message') && (session('post_id') == $post->id))
+            <p>{{ session('comment_message') }}</p>
+            @endif
+            @if (session('comment_edit') && (session('post_id') == $post->id))
+            <p>{{ session('comment_edit') }}</p>
+            @endif
+            @if (session('comment_delete') && (session('post_id') == $post->id))
+            <p>{{ session('comment_delete') }}</p>
+            @endif
             <details>
                 <summary>{{ $post->comments->count() }}件のコメント</summary>
                 @foreach ($post->comments as $comment)
