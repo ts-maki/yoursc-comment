@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('post.index') }}">
-                        <img src="{{ asset('images/friends.png') }}" alt="みんなの掲示板のロゴ" class="w-20">
+                        <img src="{{ asset('friends.png') }}" alt="みんなの掲示板のロゴ" class="w-20">
                     </a>
                 </div>
 
