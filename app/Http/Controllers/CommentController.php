@@ -23,7 +23,9 @@ class CommentController extends Controller
             'comment' => $request->comment
         ]);
 
-        return to_route('post.index')->with('comment_message', '返信を保存しました');
+        return to_route('post.index')
+        ->with('comment_message', 'コメントを保存しました')
+        ->with('post_id', $post_id);
     }
 
     //コメント編集ページ遷移
@@ -38,8 +40,11 @@ class CommentController extends Controller
     public function update(Request $request, $comment_id)
     {
         $comment = Comment::findOrFail($comment_id);
+        $post_id = $comment->post->id;
         $comment->fill($request->all())->save();
-        return to_route('post.index')->with('comment_message', 'コメント更新が完了しました');
+        return to_route('post.index')
+            ->with('comment_edit', 'コメント更新が完了しました')
+            ->with('post_id', $post_id);
     }
 
     //コメント削除
@@ -47,8 +52,11 @@ class CommentController extends Controller
     {
 
         $comment = Comment::findOrFail($comment_id);
+        $post_id = $comment->post->id;
         $comment->delete();
-        return to_route('post.index')->with('comment_message', '投稿を削除しました');
+        return to_route('post.index')
+            ->with('comment_delete', 'コメントを削除しました')
+            ->with('post_id', $post_id);
     }
     
 }
