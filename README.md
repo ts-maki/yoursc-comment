@@ -5,7 +5,8 @@ URL<br>
 
 ## アプリの概要
 掲示板アプリです。
-
+<br>
+![image](https://github.com/mirai-79/book-record/assets/99461088/bc235731-13e8-49eb-90d4-44decb25dc99)
 ## ER図
 ![image](https://github.com/mirai-79/book-record/assets/99461088/42ea0b55-8d58-4c6b-90bd-c2e9128381c0)
 
