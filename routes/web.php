@@ -49,10 +49,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/comment/edit/{comment_id}', [CommentController::class, 'update'])->name('comment.update');
     //返信削除
     Route::delete('/comment/edit/{comment_id}', [CommentController::class, 'destroy'])->name('comment.delete');
-    //いいね登録
+
+    //いいねされているか
+    Route::get('/post/like/check/{post_id}', [LikeController::class, 'checkFavorite'])->name('like.store');
+    //いいね削除
     Route::post('/post/like/{post_id}', [LikeController::class, 'store'])->name('like.store');
     //いいね削除
-    Route::delete('/post/like/{post_id}', [LikeController::class, 'destory'])->name('like.delete');
+    Route::delete('/post/like/{post_id}', [LikeController::class, 'destroy'])->name('like.delete');
 });
 
 require __DIR__ . '/auth.php';

@@ -24,7 +24,7 @@ $user_id = Auth::id();
             </div>
             <p>{{ $post->comment }}</p>
             @if (session('message_edit') && (session('post_id') == $post->id))
-                <p class="mt-2">{{ session('message_edit') }}</p>
+            <p class="mt-2">{{ session('message_edit') }}</p>
             @endif
             @if ($user_id === $post->user_id)
             <div class="d-flex justify-content-between align-items-start mt-2">
@@ -38,18 +38,19 @@ $user_id = Auth::id();
             @endif
             @auth
             @if (session('like_on_message') && (session('post_id') == $post->id))
-                <p class="mt-2">{{ session('like_on_message') }}</p>
+            <p class="mt-2">{{ session('like_on_message') }}</p>
             @endif
             @if (session('like_off_message') && (session('post_id') == $post->id))
-                <p class="mt-2">{{ session('like_off_message') }}</p>
+            <p class="mt-2">{{ session('like_off_message') }}</p>
             @endif
-            @if (!Auth::user()->isfavorite($post->id))
-            <button onclick="entryLike({{ $post->id }})" style="border: none; background-color: #F8FAFC"
-                class="mt-2"><img src="{{ asset('images/favorite_off.svg') }}" alt="いいね登録ボタン"></button>
+            @if (Auth::user()->isFavorite($post->id))
+            <button onclick="storeOrDeletefavorite({{ $post->id }})" style="border: none; background-color: #F8FAFC"
+                class="mt-2 text-warning" id="{{ $post->id }}-post-id">★</button>
             @else
-            <button onclick="deleteLike({{ $post->id }})" style="border: none; background-color: #F8FAFC"
-                class="mt-2"><img src="{{ asset('images/favorite_on.svg') }}" alt="いいね解除ボタン"></button>
+            <button onclick="storeOrDeletefavorite({{ $post->id }})" style="border: none; background-color: #F8FAFC"
+                class="mt-2 text-warning" id="{{ $post->id }}-post-id">☆</button>
             @endif
+           
             @if ($user_id !== $post->user_id)
             <div class="mt-2">
                 <a href="{{ route('post.comment', ['post_id' => $post->id]) }}"
@@ -96,37 +97,68 @@ $user_id = Auth::id();
     </x-container>
 </x-layout>
 <script>
-    //いいね登録
-    const entryLike = (postId) => {
-        fetch(`/post/like/${postId}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            },
+    
+    //いいねの登録と削除
+    const storeOrDeletefavorite = (postId) => {
+        const favoriteButton = document.getElementById(postId + '-post-id');
+        console.log(postId);
+        axios.get('/post/like/check/' + postId, {
         })
         .then(response => {
-            console.log(`${postId}のpostIDでいいね登録成功`);
-            location.reload();
+            // console.log(response.data);
+            const isFavorite = response.data.is_favorite;
+            console.log(isFavorite);
+            if (!isFavorite) {
+            axios.post('/post/like/' + postId, {
+                headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                }
+            })
+            .then(response => {
+                console.log(postId + 'のいいね登録成功');
+                favoriteButton.innerText = '★'
+            })
+            .catch(error => {
+                console.log(postId + 'のいいね登録失敗', error);
+            })
+
+        } else {
+
+            axios.delete('/post/like/' + postId, {
+                headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                }
+            })
+            .then(response => {
+                console.log(postId + 'のいいね削除成功');
+                favoriteButton.innerText = '☆'
+            })
+            .catch(error => {
+                console.log(postId + 'のいいね削除失敗', error);
+                favoriteButton.innerText = '☆'
+            })
+        }   
         })
         .catch(error => {
             console.log('いいねの登録でエラーが発生しました', error);
-        });
+        })
+
     }
 
     //いいね削除
-    const deleteLike = (postId) => {
-        fetch(`/post/like/${postId}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            },
-        })
-        .then(response => {
-            console.log(`${postId}のpostIDでいいね解除成功`);
-            location.reload();
-        })
-        .catch(error => {
-            console.log('いいねの解除でエラーが発生しました', error);
-        });
-    }
+    // const deleteLike = (postId) => {
+    //     const favoriteButton = document.getElementById(postId + '-post-id');
+    //     axios.delete(`/post/like/${postId}`, {
+    //         headers: {
+    //             'X-CSRF-TOKEN': '{{ csrf_token() }}',
+    //         }
+    //     })
+    //     .then(response => {
+    //         console.log(`${postId}のpostIDでいいね削除成功`);
+    //         favoriteButton.innerText = '★';
+    //     })
+    //     .catch(error => {
+    //         console.log('いいねの削除でエラーが発生しました', error);
+    //     })
+    // }
 </script>

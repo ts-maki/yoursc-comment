@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
+    public function checkFavorite($post_id)
+    {
+        $is_favorite = Auth::user()->isFavorite($post_id);
+        return response()->json([
+            'is_favorite' => $is_favorite
+        ]);
+    }
     public function store($post_id)
     {
         Auth::user()->likes()->syncWithoutDetaching($post_id);
-        
-        return to_route('post.index')
-            ->with('like_on_message', 'いいね登録しました')
-            ->with('post_id', $post_id);
     }
 
-    public function destory($post_id)
+    public function destroy($post_id)
     {
         Auth::user()->likes()->detach($post_id);
-
-        return to_route('post.index')
-            ->with('like_off_message', 'いいね解除しました')
-            ->with('post_id', $post_id);
     }
 }
